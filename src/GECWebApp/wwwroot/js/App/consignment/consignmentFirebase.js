@@ -57,6 +57,7 @@ function saveRemittances() {
             gananciaGEC = (gananciaEmpresa * 0.5);
 
 
+
         } else {
 
             gananciaC = 0;
