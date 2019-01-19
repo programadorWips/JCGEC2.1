@@ -1,17 +1,17 @@
 ﻿
 // funcion para updatear en firebase
-function firebaseUpdate(colection, id, montoT, contacto, gananciaC, gananciaE, ganaciaGEC, montoE, gananciaN, fecha) {
+function firebaseUpdate(colection, id, amountT, contact, profitC, profitE, profitGEC, amountE, profitN, myDate) {
 
     db.collection(colection).doc(id).set({
 
-        montoTotalDB: montoT,
-        contactoCheckBD: contacto,
-        gananciaCBD: gananciaC,
-        gananciaEDB: gananciaE,
-        gananciaGECDB: ganaciaGEC,
-        montoEntregaDB: montoE,
-        gananciaNetaDB: gananciaN,
-        fecha: fecha
+        montoTotalDB: amountT,
+        contactoCheckBD: contact,
+        gananciaCBD: profitC,
+        gananciaEDB: profitE,
+        gananciaGECDB: profitGEC,
+        montoEntregaDB: amountE,
+        gananciaNetaDB: profitN,
+        fecha: myDate
 
     })
         .then(function () {
@@ -27,16 +27,16 @@ function firebaseUpdate(colection, id, montoT, contacto, gananciaC, gananciaE, g
 
 // funcion para poner los datos en la tabla desde firebase
 
-function getTable(querySnapshot, tablaRemesas, i) {
+function getTable(querySnapshot, remittancesTable, i) {
 
-    var existeDoc = null;
+    var existDoc = null;
 
     querySnapshot.forEach(function (doc) {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
-        existeDoc = doc.id;
+        existDoc = doc.id;
 
-        tablaRemesas.innerHTML += `
+        remittancesTable.innerHTML += `
                         <tr>
                           <th>${doc.data().fecha}</th>
                           <td>Venezuela</td>
@@ -55,32 +55,32 @@ function getTable(querySnapshot, tablaRemesas, i) {
                 
                     `;
 
-        datosRemesas1[i] = doc.data().contactoCheckBD;
-        datosRemesas2[i] = doc.data().gananciaCBD;
-        datosRemesas3[i] = doc.data().gananciaEDB;
-        datosRemesas4[i] = doc.data().gananciaGECDB;
-        datosRemesas5[i] = doc.data().montoEntregaDB;
-        datosRemesas6[i] = doc.data().gananciaNetaDB;
-        datosRemesas7[i] = doc.data().montoTotalDB;
+        dataremittances1[i] = doc.data().contactoCheckBD;
+        dataremittances2[i] = doc.data().gananciaCBD;
+        dataremittances3[i] = doc.data().gananciaEDB;
+        dataremittances4[i] = doc.data().gananciaGECDB;
+        dataremittances5[i] = doc.data().montoEntregaDB;
+        dataremittances6[i] = doc.data().gananciaNetaDB;
+        dataremittances7[i] = doc.data().montoTotalDB;
         i++;
 
     });
 
-    return existeDoc;
+    return existDoc;
 }
 
-function addFirebase(db, colection, montoT, contacto, gananciaC, gananciaE, ganaciaGEC, montoE, gananciaN, fecha ) {
+function addFirebase(db, colection, amountT, contact, profitC, profitE, profitGEC, amountE, profitN, myDate ) {
 
     db.collection(colection).add({
 
-        montoTotalDB: montoT,
-        contactoCheckBD: contacto,
-        gananciaCBD: gananciaC,
-        gananciaEDB: gananciaE,
-        gananciaGECDB: ganaciaGEC,
-        montoEntregaDB: montoE,
-        gananciaNetaDB: gananciaN,
-        fecha: fecha
+        montoTotalDB: amountT,
+        contactoCheckBD: contact,
+        gananciaCBD: profitC,
+        gananciaEDB: profitE,
+        gananciaGECDB: profitGEC,
+        montoEntregaDB: amountE,
+        gananciaNetaDB: profitN,
+        fecha: myDate
 
     }).then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);

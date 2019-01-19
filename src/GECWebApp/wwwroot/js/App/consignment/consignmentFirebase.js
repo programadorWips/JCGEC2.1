@@ -1,30 +1,30 @@
 ﻿//codigo para guardar en base de datos Fire Base
 
-var mensaje = "";
+var message = "";
 var db;
 
-var datosRemesas1 = new Array();
-var datosRemesas2 = new Array();
-var datosRemesas3 = new Array();
-var datosRemesas4 = new Array();
-var datosRemesas5 = new Array();
-var datosRemesas6 = new Array();
-var datosRemesas7 = new Array();
+var dataremittances1 = new Array();
+var dataremittances2 = new Array();
+var dataremittances3 = new Array();
+var dataremittances4 = new Array();
+var dataremittances5 = new Array();
+var dataremittances6 = new Array();
+var dataremittances7 = new Array();
 
 var colection = "Remesas";
-var idRemesa = "";
+var idremittances = "";
 
 
 
-function validate(cantidadBtc, montoRemesas, tasasRemesas, tasasVentasBtc) {
+function validate(amountBtc, remittancesAmount, remittanceRates, ratesSoldsBtc) {
 
-    if (cantidadBtc == "" || montoRemesas == "" || tasasRemesas == "" || tasasVentasBtc == "") {
+    if (amountBtc == "" || remittancesAmount == "" || remittanceRates == "" || ratesSoldsBtc == "") {
 
-        return mensaje = "Porfavor no dejar ningun recuadro vacio.";
+        return message = "Porfavor no dejar ningun recuadro vacio.";
     }
     else
     {
-        return mensaje = "";
+        return message = "";
     }
 
 }
@@ -32,57 +32,60 @@ function validate(cantidadBtc, montoRemesas, tasasRemesas, tasasVentasBtc) {
 
 function saveRemittances() {
 
-    var cantidadBtc = parseFloat(document.getElementById("cantidadBtc").value);
-    var montoRemesas = parseFloat(document.getElementById("montoRemesas").value);
-    var tasasRemesas = parseFloat(document.getElementById("tasasRemesas").value);
-    var tasasVentasBtc = parseFloat(document.getElementById("tasasVentasBtc").value);
+    var rodeBtc = parseFloat(document.getElementById("cantidadBtc").value);
+    var rodeRemittances = parseFloat(document.getElementById("montoRemesas").value);
+    var remittancesRates = parseFloat(document.getElementById("tasasRemesas").value);
+    var rateSoldsBtc = parseFloat(document.getElementById("tasasVentasBtc").value);
 
     
-    if (validate(cantidadBtc, montoRemesas, tasasRemesas, tasasVentasBtc) == "") {
+    if (validate(rodeBtc, rodeRemittances, remittancesRates, rateSoldsBtc) == "") {
 
-        var contactoCheck = document.getElementById("contacto").checked;
+        var contactCheck = document.getElementById("contacto").checked;
         var f = new Date();
+        var profitC = 0;
+        var profitE = 0;
+        var profitGEC = 0;
         var fechaActual = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
         
 
-        var montoTotal = (cantidadBtc * tasasVentasBtc);
-        var montoEntrega = (tasasRemesas * montoRemesas);
+        var fullTotaly = (rodeBtc * rateSoldsBtc);
+        var entryAmount = (remittancesRates * rodeRemittances);
 
-        var gananciaEmpresa = (montoTotal - montoEntrega); // ganancia para despues dependiente del contacto
+        var profitcompany = (fullTotaly - entryAmount); // ganancia para despues dependiente del contacto
 
-        if (contactoCheck) {
+        if (contactCheck) {
 
-            gananciaC = (gananciaEmpresa * 0.2);
-            gananciaE = (gananciaEmpresa * 0.3);
-            gananciaGEC = (gananciaEmpresa * 0.5);
+            profitC = (profitcompany * 0.2);
+            profitE = (profitcompany * 0.3);
+            profitGEC = (profitcompany * 0.5);
 
 
 
         } else {
 
-            gananciaC = 0;
-            gananciaE = (gananciaEmpresa * 0.4);
-            gananciaGEC = (gananciaEmpresa * 0.6);
+            profitC = 0;
+            profitE = (profitcompany * 0.4);
+            profitGEC = (profitcompany * 0.6);
 
         }
-        var gananciaNeta = (cantidadBtc + montoRemesas + tasasVentasBtc + tasasRemesas);
+        var gananciaNeta = (rodeBtc + rodeRemittances + rateSoldsBtc + remittancesRates);
 
-        document.getElementById("montoTotal").value = montoTotal;
-        document.getElementById("gananciaC").value = gananciaC;
-        document.getElementById("gananciaE").value = gananciaE;
-        document.getElementById("gananciaGEC").value = gananciaGEC;
-        document.getElementById("montoEntrega").value = montoEntrega; 
+        document.getElementById("montoTotal").value = fullTotaly;
+        document.getElementById("gananciaC").value = profitC;
+        document.getElementById("gananciaE").value = profitE;
+        document.getElementById("gananciaGEC").value = profitGEC;
+        document.getElementById("montoEntrega").value = entryAmount; 
         document.getElementById("gananciaNeta").value = gananciaNeta;
 
 
-        if (idRemesa != "") {
+        if (idremittances != "") {
 
-            updateRemittances(idRemesa);
+            updateRemittances(idremittances);
 
         }
         else
         {
-            addFirebase(db, colection, montoTotal, contactoCheck, gananciaC, gananciaE, gananciaGEC, montoEntrega, gananciaNeta, fechaActual);
+            addFirebase(db, colection, fullTotaly, contactCheck, profitC, profitE, profitGEC, entryAmount, gananciaNeta, fechaActual);
         }
 
 
@@ -90,7 +93,7 @@ function saveRemittances() {
     else
     {
         var msnDiv = document.getElementById("mensajeError");
-        msnDiv.innerHTML = `<div class="alert alert-danger">${validate(cantidadBtc, montoRemesas, tasasRemesas, tasasVentasBtc)}</div>`
+        msnDiv.innerHTML = `<div class="alert alert-danger">${validate(rodeBtc, rodeRemittances, remittancesRates, rateSoldsBtc)}</div>`
     }
 
     
@@ -116,15 +119,15 @@ function Cancelremittances() {
 
 function getRemittances() {
 
-    var tablaRemesas = document.getElementById("datosTabla");
+    var remittancesTable = document.getElementById("datosTabla");
     
 
     var i = 0;
 
     db.collection(colection).limit(5).onSnapshot((querySnapshot) => {
-        tablaRemesas.innerHTML = "";
+        remittancesTable.innerHTML = "";
 
-        getTable(querySnapshot, tablaRemesas, i);
+        getTable(querySnapshot, remittancesTable, i);
         
     });
 
@@ -133,73 +136,74 @@ function getRemittances() {
 function updateRemittances(id) {
 
     var f = new Date();
-    var fechaActual = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
-    var montoTotalDB = document.getElementById("montoTotal").value;
-    var contactoCheckBD = document.getElementById("contacto").checked;
-    var gananciaCBD = document.getElementById("gananciaC").value;
-    var gananciaEDB = document.getElementById("gananciaE").value;
-    var gananciaGECDB = document.getElementById("gananciaGEC").value;
-    var montoEntregaDB = document.getElementById("montoEntrega").value;
-    var gananciaNetaDB = document.getElementById("gananciaNeta").value;
-    var fecha = fechaActual;
+    var nowDay = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
 
-    firebaseUpdate(colection,id,montoTotalDB, contactoCheckBD, gananciaCBD, gananciaEDB, gananciaGECDB, montoEntregaDB, gananciaNetaDB, fecha);
+    var totalyPriceDB = document.getElementById("montoTotal").value;
+    var contactCheckBD = document.getElementById("contacto").checked;
+    var profitCBD = document.getElementById("gananciaC").value;
+    var profitEDB = document.getElementById("gananciaE").value;
+    var profitGECDB = document.getElementById("gananciaGEC").value;
+    var entryAmountDB = document.getElementById("montoEntrega").value;
+    var priceNtDB = document.getElementById("gananciaNeta").value;
+    var myDate = nowDay;
+
+    firebaseUpdate(colection,id,totalyPriceDB, contactCheckBD, profitCBD, profitEDB, profitGECDB, entryAmountDB, priceNtDB, myDate);
     console.log(id);
 }
 
 function saveDataId(id, n) {
 
-    document.getElementById("contacto").checked = datosRemesas1[n];
-    document.getElementById("gananciaC").value = datosRemesas2[n];
-    document.getElementById("gananciaE").value = datosRemesas3[n];
-    document.getElementById("gananciaGEC").value = datosRemesas4[n];
-    document.getElementById("montoEntrega").value = datosRemesas5[n];
-    document.getElementById("gananciaNeta").value = datosRemesas6[n];
-    document.getElementById("montoTotal").value = datosRemesas7[n];
+    document.getElementById("contacto").checked = dataremittances1[n];
+    document.getElementById("gananciaC").value = dataremittances2[n];
+    document.getElementById("gananciaE").value = dataremittances3[n];
+    document.getElementById("gananciaGEC").value = dataremittances4[n];
+    document.getElementById("montoEntrega").value = dataremittances5[n];
+    document.getElementById("gananciaNeta").value = dataremittances6[n];
+    document.getElementById("montoTotal").value = dataremittances7[n];
 
-    idRemesa = id;
+    idremittances = id;
 }
 
 function look() {
 
-    var fechaF = document.getElementById("filtrofecha").checked;
-    var paisF = document.getElementById("filtroPais").checked;
-    var montoF = document.getElementById("filtroMonto").checked;
-    var filtro = "";
+    var myDateF = document.getElementById("filtrofecha").checked;
+    var contryF = document.getElementById("filtroPais").checked;
+    var amountF = document.getElementById("filtroMonto").checked;
+    var filter = "";
 
-    var busqueda = document.getElementById("buscaRemesa").value;
-    var tablaRemesas = document.getElementById("datosTabla");
+    var search = document.getElementById("buscaRemesa").value;
+    var remittancesTable = document.getElementById("datosTabla");
     var i = 0;
 
-    var errorFiltro = document.getElementById("errorFiltro");
-    var existeDoc = null;
+    var errFilter = document.getElementById("errorFiltro");
+    var existErr = null;
 
-    if (fechaF) {
-        filtro = "fecha";
+    if (myDateF) {
+        filter = "fecha";
     }
-    else if (paisF) {
-        filtro = "pais";
+    else if (contryF) {
+        filter = "pais";
     }
     else {
-        filtro = "montoTotalDB"
+        filter = "montoTotalDB"
     }
 
 
-    if (filtro != "") {
+    if (filter != "") {
 
-        db.collection(colection).where(filtro, "==", busqueda).limit(5)
+        db.collection(colection).where(filter, "==", search).limit(5)
             .get()
             .then(function (querySnapshot) {
-                tablaRemesas.innerHTML = "";
+                remittancesTable.innerHTML = "";
 
                 
 
-                if (getTable(querySnapshot, tablaRemesas, i) == null) {
-                    errorFiltro.innerHTML = `<div class="alert alert-danger" id="errorFiltro">Ingreso algun dato Incorrecto</div>`;
+                if (getTable(querySnapshot, remittancesTable, i) == null) {
+                    errFilter.innerHTML = `<div class="alert alert-danger" id="errorFiltro">Ingreso algun dato Incorrecto</div>`;
                 }
                 else
                 {
-                    errorFiltro.innerHTML = `<div id="errorFiltro"></div>`;
+                    errFilter.innerHTML = `<div id="errorFiltro"></div>`;
                 }
 
             })
